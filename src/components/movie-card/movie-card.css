@@ -1,0 +1,51 @@
+.movie-card {
+    max-width: 454px;
+    min-width: 454px;
+    height: 281px;
+    margin: 0;
+    padding: 0;
+    outline: #eccff9 solid 2px;
+    display: flex;
+    background-color: rgb(245, 245, 245);
+  }
+  
+  .tag-list {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 14px;
+  }
+  
+  .tag {
+    border: 1px solid #d9d3da;
+    border-radius: 6px;
+    background-color: #e7d3eb;
+    padding: 2px 5px;
+    font-size: 12px;
+  }
+  
+  .description {
+    white-space: 'pre-wrap';
+    max-width: 228px;
+  
+    font-size: 12px;
+  }
+  
+  .title {
+    max-width: 228px;
+  
+    font-size: 12px;
+  }
+  
+  .date {
+    font-size: 12px;
+  }
+  .movie-card__image-placeholder {
+    min-width: 183px;
+    height: 281px;
+    border-radius: 8px;
+  }
+  
+  .movie-card__image-spin {
+    display: block;
+    margin: auto;
+  }

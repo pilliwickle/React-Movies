@@ -1,0 +1,12 @@
+.movies-list {
+    max-width: 943px;
+    min-width: 943px;
+  
+    padding: 19px 0 19px 0;
+    margin-left: auto;
+    margin-right: auto;
+  
+    display: flex;
+    flex-wrap: wrap;
+    gap: 35px;
+  }

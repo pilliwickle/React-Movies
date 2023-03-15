@@ -1,0 +1,13 @@
+.search-panel {
+    margin: 20px;
+    max-width: 970px;
+    line-height: 50px;
+    font-size: 30px;
+    border-radius: 10px;
+  }
+  
+  .search-panel__prefix {
+    font-size: 25px;
+    color: #a18daa;
+    margin-right: 10px;
+  }
