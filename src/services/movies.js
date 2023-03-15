@@ -7,7 +7,7 @@ export default class Movies {
 
   async getSource(query, page) {
     const request = await fetch(
-      `${this._apiMovies}search/movie?${this._apiKey}&query=${query}&page=${page}&language=ru-RU`
+      `${this._apiMovies}search/movie?${this._apiKey}&query=${query}&page=${page}&language=en-EN`
     )
 
     if (!request.ok) {
@@ -15,14 +15,14 @@ export default class Movies {
     }
 
     const res = await request.json()
-    return res.results.map(this._transformData)
+    return { results: res.results.map(this._transformData), page: res.page, totalPages: res.total_pages }
   }
   _transformData = (data) => {
     return {
       title: data.title,
       id: data.id,
       // eslint-disable-next-line quotes
-      releaseDate: format(new Date(data.release_date), "MMMM d',' y"),
+      releaseDate: data.release_date ? format(new Date(data.release_date), "MMMM d',' y") : null,
       description: this._cutDescription(data.overview),
       voteAverage: data.vote_average,
       tags: ['Tag 1', 'Tag 2', 'Tag 3'],

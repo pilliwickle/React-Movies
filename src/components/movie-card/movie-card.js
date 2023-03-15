@@ -5,13 +5,13 @@ import { v4 as uuidv4 } from 'uuid'
 import Movies from '../../services/movies'
 
 import './movie-card.css'
+import testimage from './test-image.png'
 
 const { Title, Paragraph, Text } = Typography
 
 export default class MovieCard extends Component {
   movies = new Movies()
   state = {
-    path: null,
     loadingImage: true,
     errorImage: false,
   }
@@ -26,29 +26,25 @@ export default class MovieCard extends Component {
 
     return <div className="movie-card__tag-list tag-list">{tagList}</div>
   }
-  stopSpinner = () => {
-    this.setState({ loadingImage: false })
-    console.log(this.state)
-    console.log('loaded')
-  }
-
   render() {
     const { title, releaseDate, description, tags, posterPath } = this.props
 
-    const isLoading = (
-      <Image
-        width={183}
-        height={281}
-        src={posterPath}
-        alt={title + 'постер'}
-        className="movie-card__poster"
-        style={{ borderRadius: 8 }}
-        preview={false}
-      />
-    )
-
     return (
-      <Card hoverable key={uuidv4()} className="movie-card" cover={isLoading}>
+      <Card
+        hoverable
+        className="movie-card"
+        cover={
+          <Image
+            width={183}
+            height={281}
+            src={posterPath ? posterPath : testimage}
+            alt={title + 'постер'}
+            className="movie-card__poster"
+            style={{ borderRadius: 8 }}
+            preview={false}
+          />
+        }
+      >
         <Title level={5} style={{ marginTop: '0' }} className="movie-card__title title" ellipsis={{ rows: 1 }}>
           {title}
         </Title>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Spin, Alert } from 'antd'
+import { Pagination } from 'antd'
 
 import MoviesList from '../movie-list'
 import SearchPanel from '../search-panel'
@@ -11,99 +11,93 @@ export default class App extends Component {
   moviesApi = new Movies()
 
   state = {
-    movieData: [],
-    loading: true,
+    movieData: null,
+    loading: false,
     error: null,
-  }
-
-  addAllMovies = (moviesArray) => {
-    if (!moviesArray.length) {
-      this.setState({ movieData: null, loading: false })
-      return
-    }
-    moviesArray.forEach((item) => this.addMovie(item))
-    this.setState({ loading: false, error: null })
-  }
-  onError = () => {
-    this.setState({
-      // eslint-disable-next-line quotes
-      error: new Error('Failed to get data from the server, try turning on the VPN or try again later'),
-      loading: false,
-    })
+    query: '',
+    currentPage: 1,
+    totalPages: null,
   }
   componentDidMount = () => {
     window.addEventListener('online', () => {
       this.setState({ error: null })
     })
     window.addEventListener('offline', () => {
-      this.setState({ error: new Error('You should connect to the Internet back! Or just pay for it.'), movieData: [] })
+      this.setState({
+        error: new Error('You should connect to the Internet back! Or just pay for it.'),
+        movieData: null,
+      })
     })
-    this.moviesApi.getSource('return').then(this.addAllMovies).catch(this.onError)
   }
-  addMovie = (elem) => {
-    this.setState(({ movieData }) => {
-      const newState = [...movieData]
-      newState.push(elem)
-      return {
-        movieData: newState,
-      }
+
+  onSearch = (text) => {
+    this.setState({
+      query: text,
+      loading: true,
     })
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.query !== prevState.query) {
+      this.setState(this.loadingState())
+      this.moviesApi.getSource(this.state.query, 1).then(this.addAllMovies).catch(this.onError)
+    }
+
+    if (this.state.currentPage !== prevState.currentPage) {
+      this.setState(this.loadingState())
+      this.moviesApi.getSource(this.state.query, this.state.currentPage).then(this.addAllMovies).catch(this.onError)
+    }
+  }
+  loadingState = () => {
+    return { loading: true, movieData: null, error: null, totalPages: null }
+  }
+
+  addAllMovies = (moviesArray) => {
+    const movies = []
+    moviesArray.results.forEach((item) => {
+      movies.push(item)
+    }, [])
+    this.setState({
+      movieData: movies,
+      loading: false,
+      error: null,
+      currentPage: moviesArray.page,
+      totalPages: moviesArray.totalPages,
+    })
+  }
+
+  onError = (e) => {
+    console.log(e)
+    this.setState({
+      error: new Error('Failed to get data from the server, try turning on the VPN or try again later '),
+      loading: false,
+    })
+  }
+  onPageChange = (page) => {
+    this.setState({ currentPage: page })
   }
 
   render() {
-    const { movieData, loading, error } = this.state
-    const movieDataIsOK = !loading || !error
-
-    const errorBlock = error ? <ErrorAlert error={error} /> : null
-    const loadingBlock = loading ? <LoadingSpinner /> : null
-    const noMoviesBlock = !movieData ? <NoMoviesAlert /> : null
-    const moviesContent = movieDataIsOK ? <MoviesList movieData={movieData} onMoviesList={this.onMoviesList} /> : null
-
+    const { movieData, loading, error, currentPage, totalPages } = this.state
     return (
       <section className="app">
-        <SearchPanel />
-        {loadingBlock}
-        {errorBlock}
-        {noMoviesBlock}
-        {moviesContent}
+        <SearchPanel onSearch={this.onSearch} />
+        <Pagination
+          onChange={this.onPageChange}
+          current={currentPage}
+          total={totalPages}
+          defaultCurrent={1}
+          hideOnSinglePage
+        />
+        <MoviesList movieData={movieData} loading={loading} error={error} onMoviesList={this.onMoviesList} />
+        <Pagination
+          onChange={this.onPageChange}
+          current={currentPage}
+          total={totalPages}
+          defaultCurrent={1}
+          hideOnSinglePage
+        />
       </section>
     )
   }
-}
-
-const ErrorAlert = ({ error }) => {
-  return (
-    <div className="status-block">
-      <Alert
-        message="Ups! Try again or.."
-        description={error.message}
-        type="error"
-        showIcon
-        className="status-block__message"
-      />
-    </div>
-  )
-}
-
-const LoadingSpinner = () => {
-  return (
-    <div className="status-block">
-      <Spin className="status-block__spin" size="large" />
-    </div>
-  )
-}
-
-const NoMoviesAlert = () => {
-  return (
-    <div className="status-block">
-      <Alert
-        message="No movies found!"
-        description="Nothing found for your request"
-        type="warning"
-        showIcon
-        className="status-block__message"
-      />
-    </div>
-    //no movie found
-  )
 }
