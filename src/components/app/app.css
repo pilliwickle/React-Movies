@@ -1,5 +1,4 @@
 .app {
-    max-width: 1010px;
     margin: 20px auto;
     padding: 10px;
     background-color: hsl(0, 0%, 65%);
@@ -8,15 +7,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-width: 420px;
+    max-width: 420px;
+  } 
+  @media (min-width: 1024px) {
+    .app {
+      max-width: 1010px;
+    }
   }
-.status-block {
-    width: 100%;
-    min-height: 300px;
-    text-align: center;
-    padding: 20% 0;
-  }
-  
-.status-block__message {
-    max-width: 500px;
-    margin: auto;
-  }  

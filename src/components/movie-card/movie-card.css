@@ -1,51 +1,64 @@
 .movie-card {
-    max-width: 454px;
-    min-width: 454px;
-    height: 281px;
+    max-width: 387px;
+    max-width: 387px;
+    height: 245px;
     margin: 0;
     padding: 0;
-    outline: #eccff9 solid 2px;
+    padding-right: 10px;
+    outline: #0adcf8 solid 2px;
+    font-size: 10px;
     display: flex;
     background-color: rgb(245, 245, 245);
   }
+  @media (min-width: 1024px) {
+    .movie-card {
+      max-width: 454px;
+      min-width: 454px;
+      height: 281px;
+      font-size: 12px;
+    }
+  }
+  
+  .vote-average {
+    transform: translateX(5px);
+  }
+  
+  .title {
+    max-width: 200px;
+    font-size: inherit;
+  }
+  
+  .date {
+    font-size: inherit;
+  }
+  
   
   .tag-list {
     display: flex;
-    gap: 5px;
+    flex-wrap: wrap;
+    gap: 3px;
     margin-bottom: 14px;
+    font-size: inherit;
   }
   
   .tag {
-    border: 1px solid #d9d3da;
-    border-radius: 6px;
-    background-color: #e7d3eb;
-    padding: 2px 5px;
-    font-size: 12px;
+    font-size: inherit;
   }
   
   .description {
     white-space: 'pre-wrap';
-    max-width: 228px;
-  
-    font-size: 12px;
   }
-  
   .title {
-    max-width: 228px;
-  
-    font-size: 12px;
+    max-width: 200px;
+    font-size: inherit;
   }
   
-  .date {
-    font-size: 12px;
-  }
-  .movie-card__image-placeholder {
-    min-width: 183px;
-    height: 281px;
-    border-radius: 8px;
-  }
-  
-  .movie-card__image-spin {
-    display: block;
-    margin: auto;
+
+  @media (min-width: 1024px) {
+    .title {
+      max-width: 228px;
+    }
+    .description {
+      max-width: 228px;
+    }
   }

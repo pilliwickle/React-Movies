@@ -1,0 +1,22 @@
+.status-block {
+    width: 100%;
+    min-height: 300px;
+    text-align: center;
+    padding: 20% 0;
+  }
+  
+  .status-block__message {
+    max-width: 350px;
+    margin: auto;
+  }
+  
+  .movie-card__image-placeholder {
+    padding-top: 70%;
+    padding-left: 50%;
+  }
+  
+  @media (min-width: 1024px) {
+    .status-block__message {
+      max-width: 500px;
+    }
+  }
